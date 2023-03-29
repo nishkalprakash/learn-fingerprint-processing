@@ -17,7 +17,6 @@ Tasks that allow students to learn the basics of image processing, esp Fingerpri
 
 ## Recommened Softwares
 * [Anaconda](https://www.anaconda.com/products/individual)
-<!-- * [Jupyter Notebook](https://jupyter.org/install) -->
 * [Git](https://git-scm.com/downloads)
 * [VSCode](https://code.visualstudio.com/download)
 

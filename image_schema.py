@@ -7,7 +7,7 @@
         "eg": "5f9b3b7b9c9d3b3b9c9d3b3b",
     },
     "path": {
-        "info": "Path to the image",
+        "info": "Path to the image (should be relative to the root of the dataset, see eg)",
         "type": "str",
         "required": True,
         "eg": "FVC2002/Dbs/DB1_A/100_1.tif",
@@ -20,7 +20,7 @@
     "height": {
         "info":"Height of the image",
         "type": "int",
-        "eg":"66",
+        "eg":"480",
     },
     "image": {
         "info": "2D/3D array containing raw data the image",

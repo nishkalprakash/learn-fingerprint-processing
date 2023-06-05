@@ -4,6 +4,8 @@ import cv2 as cv
 from pathlib import Path
 import numpy as np
 from pprint import pprint as pp
+from minutiae_utils import crossing_number, minutiae_net
+
 #%% Logging
 from setup_logger import get_logger
 
@@ -29,7 +31,8 @@ class Image:
         Args:
             width (int|str|path|iterable): width of the image
             height (int): height of the image
-        """  
+        """
+
         if isinstance(width,str|Path):
             """if width is a string or path then load the image from the given path"""
             logger.info(f"Loading image from path: {width}")
@@ -63,6 +66,7 @@ class Image:
         logger.info(f"Initializing empty 1 channel image with 0 of size {self.width}x{self.height}")
         self.image = np.array([[0]*self.width]*self.height)
         
+
     
     ## START INIT METHODS for image ##
     def __getitem__(self,key):
@@ -72,6 +76,7 @@ class Image:
             return d[key]
         logger.warning(f"Unknown key: {key}")
         # return self.__dict__[key]
+    
     def init_from_dict(self, doc):
         """Initializes the image from the given mongo document"""
         ## copy all the fields from the document to __dict__
@@ -161,20 +166,29 @@ class Image:
 
     def get_minutiae(self, method=None):
         """Returns the extract the minutiae from the fingerprint image extracted using the given method"""
-        self.avail_minutiae_methods([
-            "crossing_number",
-            "minutiae_net",
-        ])
+        self.minutiae_methods({
+            "crossing_number":crossing_number,
+            "minutiae_net":minutiae_net,
+        })
+        logger.info(f"Available minutiae extraction methods:\n{pp(self.minutiae_methods)}")
         self.default_minutiae_method = "crossing_number"
         if method is None:
-            logger.info(f"Available minutiae extraction methods:\n{pp(self.minutiae_methods)}")
             logger.info(f"returning minutiae extrated using default method [{self.default_minutiae_method}]")
             return self.extract_minutiae(self.default_minutiae_method)
         elif method in self.minutiae_methods:
             logger.info(f"returning minutiae extrated using method [{method}]")
-            return self.extract_minutiae(method)
+            self.mv=self.mvs.get(method,self.extract_minutiae(method))
         return self.minutiae
 
     def extract_minutiae(self, method):
-        """Extract the minutiae from the fingerprint image using the given method"""
-        self.minutiae = 
+        """Extract the minutiae from the fingerprint image using the given method, should only be called from self.get_minutiae()"""
+        logger.info(f"Extracting minutiae using method: {method}")
+        if method in self.mintiae_methods:
+            return self.minutiae_methods[method](self.image)
+            # case "minutiae_net":
+                # return self.minutiae_net()
+        else:
+            logger.error(f"Unknown method: {method}")
+            raise Exception(f"Unknown method: {method}")
+    
+        # return self.minutiae_methods[method](self.image)

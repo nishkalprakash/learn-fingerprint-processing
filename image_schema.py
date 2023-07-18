@@ -50,12 +50,13 @@
     "mv": {
         "info": "List of dictionaries containing the minutia info of the image, each dictionary",
         "type": "list",
-        "eg": "mv = [{'x': 166, 'y': 24, 'angle': -2.4, 'type': True}, ...]",
+        "eg": "mv = [{'x': 166, 'y': 24, 'angle': -2.4, 'type': True, ...}, ...]",
         "mv[0]": {
             "x": "(int) x coordinate of the minutia",
             "y": "(int) y coordinate of the minutia",
             "angle": "(float) angle of the minutia in rad",
             "type": "(bool) type of the minutia (true=RE, false=Bf)",
+            "score": "(float) score of the minutia as returned by minutiae extraction algorithm",
         }
     },
     "core": {
@@ -81,7 +82,7 @@
     "cores":{
         "info":"Cores extracted using a particular method as the key",
         "type":"dict",
-        "eg":"cores = {'walking': core, 'sailing': core, 'ground_truth': core, ...}",
+        "eg":"cores = {'walking': core, 'poin_care': core, 'minutiae_net': core, ...}",
     },
     "type":{
         "info":"Class of the fingerprint image (uses henry classification)",
